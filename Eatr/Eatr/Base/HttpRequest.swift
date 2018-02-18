@@ -59,7 +59,7 @@ open class HttpRequest {
         if(self.headers == nil){
             self.headers = Dictionary<String, String>.init()
         }
-        headers!["Authorization"] = "bearer" + token
+        headers!["Authorization"] = "bearer " + token
         return self
     }
     
@@ -101,6 +101,7 @@ open class HttpRequest {
     
     internal var body : Data?
     public func asyncExecute() {
+        onProgress(0)
         do {
             onProgress(0.1429)
             let sessions = try HttpRequest.requestBuilder(with: self, body: self.body, method: method).first
@@ -119,6 +120,7 @@ open class HttpRequest {
     }
     
     public func awaitExecute() -> Response? {
+        onProgress(0)
         do {
             onProgress(0.1429)
             let sessions = try HttpRequest.requestBuilder(with: self, body: self.body, method: method).first
