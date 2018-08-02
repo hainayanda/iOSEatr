@@ -1,0 +1,6 @@
+framework module Eatr {
+  umbrella header "Eatr-umbrella.h"
+
+  export *
+  module * { export * }
+}

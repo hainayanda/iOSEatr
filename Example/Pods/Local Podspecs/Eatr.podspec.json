@@ -1,0 +1,27 @@
+{
+  "name": "Eatr",
+  "version": "0.1.0",
+  "summary": "A short description of Eatr.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/nayandaCatch/Eatr",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "nayandaCatch": "nayanda1@outlook.com"
+  },
+  "source": {
+    "git": "https://github.com/nayandaCatch/Eatr.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "Eatr/Classes/**/*",
+  "dependencies": {
+    "HandyJSON": [
+      "~> 4.1.1"
+    ]
+  }
+}

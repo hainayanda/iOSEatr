@@ -17,7 +17,7 @@ for changelog check [here](CHANGELOG.md)
 - [x] Auto encode param and form url encoded body
 - [x] Support synchronous or asynchronous operation
 - [x] Support progress observer
-
+- [x] Support HandyJSON object
 ---
 ## Requirements
 
@@ -39,12 +39,12 @@ Build the object using HttpRequestBuilder and then execute
 
 ```swift
 //HttpGet
-let getResponse : Response? = HttpRequestBuilder.httpGet.set(url : "http://your.url.here")
+let getResponse : Response? = EatrRequestBuilder.httpGet.set(url : "http://your.url.here")
     .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
     .addParam(withKey : "param_key", andValue : "param_value")
     .awaitExecute()
 
-if let response : Response = getResponse {
+if let response : EatrResponse = getResponse {
     let rawResponse : URLResponse? = response.rawResponse
     let isSuccess : Bool = response.isSuccess
     let isError : Bool = response.isError
@@ -53,45 +53,24 @@ if let response : Response = getResponse {
     let strBody : String? = response.bodyAsString
     let jsonBody : [String : Any?] = response.bodyAsJson
     let arrJsonBody : [Any?] = response.bodyAsJsonArray
+    let parsedBody : YourHandyJSONObj = response.parsedBody()
+    let parsedArray : [YourHandyJSONObj?] = response.parsedArrayBody
 }
 
 //HttpPost with Json body
-let postJsonResponse : Response? = HttpRequestBuilder.httpPost.set(url : "http://your.url.here")
+let postJsonResponse : Response? = EatrRequestBuilder.httpPost.set(url : "http://your.url.here")
     .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
     .addParam(withKey : "param_key", andValue : "param_value")
-    .add(jsonBody : jsonDictionary).awaitExecute()
-
-//HttpPost with Array Json body
-let postArrayJsonResponse : Response? = HttpRequestBuilder.httpPost.set(url : "http://your.url.here")
-    .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
-    .addParam(withKey : "param_key", andValue : "param_value")
-    .add(arrayJsonBody : arrayOfJsonDictionary).awaitExecute()
-
-//HttpPost with Form Url Encoded
-let postFormUrlResponse : Response? = HttpRequestBuilder.httpPost.set(url : "http://your.url.here")
-    .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
-    .addParam(withKey : "param_key", andValue : "param_value")
-    .add(formUrlEncoded : dictionaryOfStrings).awaitExecute()
-
-//HttpPost with String
-let postStringResponse : Response? = HttpRequestBuilder.httpPost.set(url : "http://your.url.here")
-    .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
-    .addParam(withKey : "param_key", andValue : "param_value")
-    .add(body : "YOUR STRING").awaitExecute()
-
-//HttpPost with data
-let postDataResponse : Response? = HttpRequestBuilder.httpPost.set(url : "http://your.url.here")
-    .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
-    .addParam(withKey : "param_key", andValue : "param_value")
-    .add(rawBody : dataObject).awaitExecute()
+    .set(jsonBody : jsonDictionary).awaitExecute()
 ```
+You can use raw body, form data, string, HandyJSON Object or any JSON Object for request body
 
 ### Simple Asynchronous
 Everything is same like synchronous, but you need to pass consumer function into the execute method  
 Remember, response inside closure will be null if reaching timeout
 ```swift
 //Basic
-HttpRequestBuilder.httpGet.set(url : "http://your.url.here")
+EatrRequestBuilder.httpGet.set(url : "http://your.url.here")
     .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
     .addParam(withKey : "param_key", andValue : "param_value")
     .asyncExecute(onFinished : { response : Response? in
@@ -116,31 +95,7 @@ Remember, response inside closure will be null if reaching timeout
 
 ```swift
 //with onFinished closure
-HttpRequestBuilder.httpGet.set(url : "http://your.url.here")
-    .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
-    .addParam(withKey : "param_key", andValue : "param_value")
-    .set(onTimeout : {
-        //YOUR CODE HERE
-    })
-    .set(onBeforeSending : { (session : URLSession) -> URLSession in
-        //YOUR CODE HERE
-    })
-    .set(onError : { error : Error in
-        //YOUR CODE HERE
-    })
-    .set(onProgress : { progress : Float in
-        //YOUR CODE HERE
-    })
-    .set(onResponded : { response : Response in
-        //YOUR CODE HERE
-    })
-    .asyncExecute(onFinished : { response : Response? in
-        //YOUR CODE HERE
-        // WILL BE EXECUTE AFTER REQUEST IS FINISHED
-    })
-    
-//without onFinished closure
-HttpRequestBuilder.httpGet.set(url : "http://your.url.here")
+EatrRequestBuilder.httpGet.set(url : "http://your.url.here")
     .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
     .addParam(withKey : "param_key", andValue : "param_value")
     .set(onTimeout : {
@@ -160,8 +115,8 @@ HttpRequestBuilder.httpGet.set(url : "http://your.url.here")
     })
     .asyncExecute()
 
-//you can even do it asynchronously and all your closure will be executed asynchronously
-let response : Response? = HttpRequestBuilder.httpGet.set(url : "http://your.url.here")
+//you can even do it synchronously and all your closure will be executed synchronously
+let response : Response? = EatrRequestBuilder.httpGet.set(url : "http://your.url.here")
     .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
     .addParam(withKey : "param_key", andValue : "param_value")
     .set(onTimeout : {
@@ -182,6 +137,25 @@ let response : Response? = HttpRequestBuilder.httpGet.set(url : "http://your.url
     .awaitExecute()
 ```
 
+### Using Delegate
+If you prefer using delegate, there is delegate protocol for you to use which is EatrDelegate with available method :
+- eatrOnBeforeSending(_ sessionToSend : URLSession) -> URLSession
+- eatrOnTimeout()
+- eatrOnError(_ error: Error)
+- eatrOnProgress(_ progress: Float)
+- eatrOnResponded(_ response: EatrResponse)
+- eatrOnFinished()
+
+All method are optional, use the one you need
+
+```swift
+EatrRequestBuilder.httpGet.set(url : "http://your.url.here")
+    .addHeader(withKey : "SOME-HEADER", andValue : "header_value")
+    .addParam(withKey : "param_key", andValue : "param_value")
+    .set(delegate : self)
+    .asyncExecute()
+```
+
 ---
 ## Contribute
-We would love you for the contribution to **DroidEatr**, just contact me to nayanda1@outlook.com or just pull request
+We would love you for the contribution to **iOSEatr**, just contact me to nayanda1@outlook.com or just pull request
