@@ -17,7 +17,7 @@ for changelog check [here](CHANGELOG.md)
 - [x] Auto encode param and form url encoded body
 - [x] Support synchronous or asynchronous operation
 - [x] Support progress observer
-- [x] Support HandyJSON object
+- [x] Support HandyJSON object <https://github.com/alibaba/HandyJSON>
 ---
 ## Requirements
 
@@ -26,8 +26,10 @@ for changelog check [here](CHANGELOG.md)
 ---
 ## Installation
 ### CocoaPods
-*COMING SOON*
-
+put this in your Podfile
+```
+pod 'Eatr', '~> 0.1'
+```
 ### Manually
 1. Clone this repository.
 2. Added to your project.
