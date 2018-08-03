@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Eatr'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'RESTful web service consumer for iOS (Swift) with builder.'
 
 # This description is used to generate tags and improve search results.
@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   
   Requirements
   
-  - Swift 3.0 or higher
+  - Swift 3.2 or higher
   
   Usage Example
   

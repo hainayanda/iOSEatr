@@ -21,14 +21,14 @@ for changelog check [here](CHANGELOG.md)
 ---
 ## Requirements
 
-- Swift 3.0 or higher
+- Swift 3.2 or higher
 
 ---
 ## Installation
 ### CocoaPods
 put this in your Podfile
 ```
-pod 'Eatr', '~> 0.1'
+pod 'Eatr', '~> 0.1.1'
 ```
 ### Manually
 1. Clone this repository.

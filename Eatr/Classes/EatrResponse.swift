@@ -11,16 +11,16 @@ import HandyJSON
 public class EatrResponse : NSObject {
     
     private var _rawResponse : URLResponse?
-    var rawResponse : URLResponse?{
+    public var rawResponse : URLResponse?{
         return _rawResponse
     }
     
     private var _rawBody : Data?
-    var rawBody: Data? {
+    public var rawBody: Data? {
         return _rawBody
     }
     
-    var bodyAsString: String? {
+    public var bodyAsString: String? {
         guard let data : Data = rawBody else {
             return nil
         }
@@ -32,7 +32,7 @@ public class EatrResponse : NSObject {
         }
     }
     
-    var bodyAsJson: Dictionary<String, Any>?{
+    public var bodyAsJson: Dictionary<String, Any>?{
         guard let data : Data = rawBody else { return nil }
         do {
             if let json : Dictionary<String, Any> = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String, Any>
@@ -47,14 +47,14 @@ public class EatrResponse : NSObject {
         return nil
     }
     
-    func parsedBody<T: HandyJSON>() -> T? {
+    public func parsedBody<T: HandyJSON>() -> T? {
         if let json : [String : Any] = bodyAsJson {
             return T.deserialize(from: json)
         }
         return nil
     }
     
-    func parsedArrayBody<T: HandyJSON>() -> [T?]? {
+    public func parsedArrayBody<T: HandyJSON>() -> [T?]? {
         if let json : [Any?] = bodyAsJsonArray {
             var results : [T?] = []
             for member in json {
@@ -75,7 +75,7 @@ public class EatrResponse : NSObject {
         return nil
     }
     
-    var bodyAsJsonArray : Array<Any?>?{
+    public var bodyAsJsonArray : Array<Any?>?{
         guard let data : Data = rawBody else { return nil }
         do {
             if let array : Array<Any?> = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Array<Any?>
@@ -91,11 +91,11 @@ public class EatrResponse : NSObject {
     }
     
     private var _statusCode : Int?
-    var statusCode : Int? {
+    public var statusCode : Int? {
         return _statusCode
     }
     
-    var isSuccess : Bool {
+    public var isSuccess : Bool {
         if let statusCode : Int = statusCode {
             return statusCode >= 200 && statusCode <= 299
         }
@@ -105,11 +105,11 @@ public class EatrResponse : NSObject {
     }
     
     private var _error : Error?
-    var error : Error? {
+    public var error : Error? {
         return _error
     }
     
-    var isError : Bool {
+    public var isError : Bool {
         return error == nil
     }
     

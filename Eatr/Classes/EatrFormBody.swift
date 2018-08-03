@@ -8,18 +8,18 @@
 import Foundation
 
 public class EatrFormBody {
-    var content : Data
-    var type : String
-    var name : String
-    var fileName: String?
+    public var content : Data
+    public var type : String
+    public var name : String
+    public var fileName: String?
     
-    init(content: Data, name: String, type: String) {
+    public init(content: Data, name: String, type: String) {
         self.content = content
         self.name = name
         self.type = type
     }
     
-    init(content: Data, fileName: String, name: String, type: String) {
+    public init(content: Data, fileName: String, name: String, type: String) {
         self.content = content
         self.name = name
         self.type = type
