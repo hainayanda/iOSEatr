@@ -28,7 +28,7 @@ for changelog check [here](CHANGELOG.md)
 ### CocoaPods
 put this in your Podfile
 ```
-pod 'Eatr', '~> 0.1.1'
+pod 'Eatr', '~> 0.1.2'
 ```
 ### Manually
 1. Clone this repository.
