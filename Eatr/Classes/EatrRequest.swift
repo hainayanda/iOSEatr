@@ -32,7 +32,7 @@ open class EatrRequest {
         return self
     }
     
-    internal var timeout = 10000
+    internal var timeout = 30
     public func set(timeout : Int) -> EatrRequest {
         self.timeout = timeout
         return self
