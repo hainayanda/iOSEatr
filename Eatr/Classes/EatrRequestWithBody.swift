@@ -16,7 +16,7 @@ public class EatrRequestWithBody {
     }
     
     public func set(operationQueue: OperationQueue?) -> EatrRequestWithBody{
-        httpRequest.operationQueue = operationQueue
+        httpRequest.opQueue = operationQueue
         return self
     }
     
@@ -100,22 +100,22 @@ public class EatrRequestWithBody {
     }
     
     public func set(url : String) -> EatrRequestWithBody {
-        httpRequest.url = url
+        httpRequest.rUrl = url
         return self
     }
     
     public func set(params : Dictionary<String, String>) -> EatrRequestWithBody {
-        httpRequest.params = params
+        httpRequest.parameters = params
         return self
     }
     
     public func set(headers : Dictionary<String, String>) -> EatrRequestWithBody {
-        httpRequest.headers = headers
+        httpRequest.rHeaders = headers
         return self
     }
     
     public func set(timeout : Int) -> EatrRequestWithBody {
-        httpRequest.timeout = timeout
+        httpRequest.rTimeout = timeout
         return self
     }
     
