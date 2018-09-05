@@ -15,6 +15,11 @@ public class EatrRequestWithBody {
         httpRequest = EatrRequest.init(method: method)
     }
     
+    public func set(operationQueue: OperationQueue?) -> EatrRequestWithBody{
+        httpRequest.operationQueue = operationQueue
+        return self
+    }
+    
     public func set(rawBody : Data) -> EatrRequestWithBody {
         httpRequest.body = rawBody
         return self
@@ -62,12 +67,22 @@ public class EatrRequestWithBody {
         return self
     }
     
+    public func set(dictionaryJsonBody : Dictionary<String, Any?>) throws -> EatrRequestWithBody {
+        httpRequest.body = try JSONSerialization.data(withJSONObject: dictionaryJsonBody, options: [])
+        httpRequest = httpRequest.addHeader(withKey: "Content-Type", andValue: "application/json")
+        return self
+    }
+    
     public func set(json : HandyJSON) throws -> EatrRequestWithBody {
         return try set(jsonBody: json.toJSON()!)
     }
     
-    public func set(arrayJson : [HandyJSON?]) throws -> EatrRequestWithBody {
-        return try set(arrayJsonBody: arrayJson.toJSON())
+    public func set(dictionaryJSON : [String : HandyJSON?]) -> EatrRequestWithBody {
+        return set(body: dictionaryJSON.toJSONString()).addHeader(withKey: "Content-Type", andValue: "application/json")
+    }
+    
+    public func set(arrayJson : [HandyJSON?]) -> EatrRequestWithBody {
+        return set(body: arrayJson.toJSONString()).addHeader(withKey: "Content-Type", andValue: "application/json")
     }
     
     public func set(formUrlEncoded : Dictionary<String, String>) -> EatrRequestWithBody {

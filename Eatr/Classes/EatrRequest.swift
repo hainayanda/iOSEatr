@@ -7,7 +7,13 @@
 
 import Foundation
 
-open class EatrRequest {
+open class EatrRequest : NSObject, URLSessionDelegate {
+    
+    internal var operationQueue : OperationQueue?
+    public func set(operationQueue: OperationQueue?) -> EatrRequest{
+        self.operationQueue = operationQueue
+        return self
+    }
     
     internal var method : EatrRequestMethod
     internal init(method : EatrRequestMethod) {
@@ -172,7 +178,7 @@ open class EatrRequest {
         config.timeoutIntervalForRequest = TimeInterval(httpRequest.timeout)
         config.timeoutIntervalForResource = TimeInterval(httpRequest.timeout)
         httpRequest.onProgress?(0.5716)
-        var session = URLSession(configuration: config)
+        var session = URLSession.init(configuration: config, delegate: httpRequest, delegateQueue: httpRequest.operationQueue)
         if let onBeforeSending : (URLSession) -> URLSession = httpRequest.onBeforeSending {
             session = onBeforeSending(session)
         }
@@ -199,22 +205,23 @@ open class EatrRequest {
             else{
                 if let error : Error = error{
                     httpRequest.onError?(error)
-                    httpRequest.onProgress?(1.0)
-                    httpRequest.onFinished?(nil)
                 }
                 else{
                     httpRequest.onTimeout?()
-                    httpRequest.onProgress?(1.0)
-                    httpRequest.onFinished?(nil)
                 }
+                httpRequest.onProgress?(1.0)
+                httpRequest.onFinished?(nil)
             }
             }.resume()
     }
     
+    fileprivate static var groups : [URLSession : DispatchGroup] = [:]
+    fileprivate static var awaitResults : [URLSession : EatrResponse?] = [:]
     static private func awaitExecutor(with session : URLSession, and request : NSMutableURLRequest, httpRequest : EatrRequest) -> EatrResponse? {
         httpRequest.onProgress?(0.7145)
         var responseObj : EatrResponse?
         let group = DispatchGroup.init()
+        groups[session] = group
         group.enter()
         session.dataTask(with: request as URLRequest) {
             (data, response, error) -> Void in
@@ -223,21 +230,45 @@ open class EatrRequest {
                 responseObj = EatrResponse.init(response, data, httpResponse.statusCode, error)
                 httpRequest.onResponded?(responseObj!)
             }
-            else if response != nil {
+            else if let response : URLResponse = response {
                 responseObj = EatrResponse.init(response, data, nil, error)
             }
             else{
                 if let error : Error = error{
                     httpRequest.onError?(error)
+                    responseObj = EatrResponse.init(nil, data, nil, error)
                 }
                 else{
                     httpRequest.onTimeout?()
+                    responseObj = EatrResponse.init(nil, data, nil, nil)
                 }
             }
             group.leave()
             }.resume()
-        group.wait()
+        let _ = group.wait(timeout: DispatchTime.now() + request.timeoutInterval)
         httpRequest.onProgress?(1.0)
+        let resultExist = awaitResults.contains(where: { (pair) -> Bool in
+            return pair.key == session
+        })
+        let awaitResult: EatrResponse? = resultExist ? (awaitResults[session] ?? nil) : nil
+        if resultExist {
+            awaitResults.removeValue(forKey: session)
+        }
+        responseObj = responseObj ?? awaitResult
         return responseObj
+    }
+    
+    public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        if let error : Error = error {
+            onError?(error)
+        }
+        EatrRequest.awaitResults[session] = EatrResponse.init(nil, nil, nil, error)
+        let groupExist = EatrRequest.groups.contains(where: { (pair) -> Bool in
+            return pair.key == session
+        })
+        if groupExist {
+            EatrRequest.groups[session]?.leave()
+            EatrRequest.groups.removeValue(forKey: session)
+        }
     }
 }

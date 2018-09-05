@@ -41,3 +41,39 @@ extension Array where Element == HandyJSON?  {
     }
     
 }
+
+extension Dictionary where Key == String, Value == HandyJSON? {
+    
+    public func toJSONString() -> String {
+        var dictJson = "["
+        for pair in self {
+            let key = pair.key
+            if let value : HandyJSON = pair.value, let json : String = value.toJSONString() {
+                dictJson = "\(dictJson)\"\(key)\":\(json),"
+            }
+            else {
+                dictJson = "\(dictJson)\"\(key)\":null,"
+            }
+        }
+        if dictJson.last == "," {
+            dictJson.removeLast()
+        }
+        dictJson = "\(dictJson)]"
+        return dictJson
+    }
+    
+    public func toJSON() -> [String : [String : Any]?] {
+        var dictJson : [String : [String: Any]?] = [:]
+        for pair in self {
+            let key = pair.key
+            if let value : HandyJSON = pair.value, let json : [String: Any] = value.toJSON() {
+                dictJson[key] = json
+            }
+            else {
+                dictJson[key] = nil
+            }
+        }
+        return dictJson
+    }
+    
+}

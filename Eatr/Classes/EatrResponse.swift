@@ -59,15 +59,27 @@ public class EatrResponse : NSObject {
             var results : [T?] = []
             for member in json {
                 if let member : [String : Any] = member as? [String : Any] {
-                    if let obj : T = T.deserialize(from: member) {
-                        results.append(obj)
-                    }
-                    else {
-                        results.append(nil)
-                    }
+                    results.append(T.deserialize(from: member))
                 }
                 else {
                     results.append(nil)
+                }
+            }
+            return results
+        }
+        return nil
+    }
+    
+    public func parsedDictionaryBody<T: HandyJSON>() -> [String : T?]? {
+        if let json : [String : Any?] = bodyAsJsonDictionary {
+            var results : [String : T?] = [:]
+            for pair in json {
+                let key = pair.key
+                if let value : [String : Any] = pair.value as? [String : Any] {
+                    results[key] = T.deserialize(from: value)
+                }
+                else {
+                    results[key] = nil
                 }
             }
             return results
@@ -88,6 +100,22 @@ public class EatrResponse : NSObject {
             print(error)
         }
         return nil
+    }
+    
+    public var bodyAsJsonDictionary : Dictionary<String, Any?>? {
+        guard let data : Data = rawBody else { return nil }
+        do {
+            if let dict : Dictionary<String, Any?> = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String, Any?>
+            {
+                return dict
+            } else {
+                return nil
+            }
+        } catch let error as NSError {
+            print(error)
+        }
+        return nil
+        
     }
     
     private var _statusCode : Int?
