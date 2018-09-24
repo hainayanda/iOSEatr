@@ -102,7 +102,7 @@ open class EatrRequest : NSObject, URLSessionDelegate {
         return self
     }
     
-    internal var rDelegate : EatrDelegate?
+    internal weak var rDelegate : EatrDelegate?
     public func set(delegate : EatrDelegate) -> EatrRequest {
         self.rDelegate = delegate
         self.rOnBeforeSending = self.rDelegate!.eatrOnBeforeSending(_:)
