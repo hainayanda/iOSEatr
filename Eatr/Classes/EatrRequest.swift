@@ -15,8 +15,12 @@ open class EatrRequest : NSObject, URLSessionDelegate {
         return self
     }
     
-    internal var rMethod : EatrRequestMethod
+    internal var rMethod : String
     internal init(method : EatrRequestMethod) {
+        self.rMethod = method.rawValue
+    }
+    
+    internal init(method : String) {
         self.rMethod = method
     }
     
@@ -158,7 +162,7 @@ open class EatrRequest : NSObject, URLSessionDelegate {
         }
     }
     
-    static private func requestBuilder(with httpRequest : EatrRequest, body : Data?, method : EatrRequestMethod) throws -> [URLSession : NSMutableURLRequest] {
+    static private func requestBuilder(with httpRequest : EatrRequest, body : Data?, method : String) throws -> [URLSession : NSMutableURLRequest] {
         guard let url : String = httpRequest.rUrl else {
             throw EatrError.URLError("URL is empty")
         }
@@ -172,7 +176,7 @@ open class EatrRequest : NSObject, URLSessionDelegate {
         if let body : Data = body {
             request.httpBody = body
         }
-        request.httpMethod = method.rawValue
+        request.httpMethod = method
         httpRequest.rOnProgress?(0.4287)
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = TimeInterval(httpRequest.rTimeout)

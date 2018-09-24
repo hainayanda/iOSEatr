@@ -15,6 +15,10 @@ public class EatrRequestWithBody {
         httpRequest = EatrRequest.init(method: method)
     }
     
+    internal init(method: String){
+        httpRequest = EatrRequest.init(method: method)
+    }
+    
     public func set(operationQueue: OperationQueue?) -> EatrRequestWithBody{
         httpRequest.opQueue = operationQueue
         return self

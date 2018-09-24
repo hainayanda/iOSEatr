@@ -19,4 +19,12 @@ public class EatrRequestBuilder {
     public static var httpPut : EatrRequestWithBody {
         return EatrRequestWithBody.init(method: .put)
     }
+    
+    public static func customHttpRequestWithBody(method : String) -> EatrRequestWithBody {
+        return EatrRequestWithBody.init(method: method)
+    }
+    
+    public static func customHttpRequest(method: String) -> EatrRequest {
+        return EatrRequest.init(method: method)
+    }
 }

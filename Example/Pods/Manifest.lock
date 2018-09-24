@@ -1,14 +1,14 @@
 PODS:
-  - Eatr (0.1.0):
-    - HandyJSON (~> 4.1.1)
-  - HandyJSON (4.1.3)
-  - Nimble (7.0.3)
-  - Quick (1.2.0)
+  - Eatr (0.1.5):
+    - HandyJSON (~> 4.2.0)
+  - HandyJSON (4.2.0)
+  - Nimble (7.3.1)
+  - Quick (1.3.2)
 
 DEPENDENCIES:
   - Eatr (from `../`)
-  - Nimble (~> 7.0.2)
-  - Quick (~> 1.2.0)
+  - Nimble (~> 7.3)
+  - Quick (~> 1.3)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -21,11 +21,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Eatr: 5d258bf56b1538502b754969b46341ef570d1053
-  HandyJSON: bc81fbeb62d65ae5d5942ed29bc4a8265d18c1e8
-  Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
-  Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
+  Eatr: bf590760d5971a436ea22ede61102cef71372941
+  HandyJSON: 9dfc026c7d7adc1f0f8ba8b181495f0e0763b0f4
+  Nimble: 04f732da099ea4d153122aec8c2a88fd0c7219ae
+  Quick: 2623cb30d7a7f41ca62f684f679586558f483d46
 
-PODFILE CHECKSUM: c36644a4e2d52ef40a97040309e991b149b17ee1
+PODFILE CHECKSUM: 58e45ee8a625d4b3d7b45cd9a64758f51d59d439
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.1
