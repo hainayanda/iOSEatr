@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Eatr'
-  s.version          = '0.1.6'
+  s.version          = '0.1.7'
   s.summary          = 'RESTful web service consumer for iOS (Swift) with builder.'
 
 # This description is used to generate tags and improve search results.
@@ -165,12 +165,12 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'Eatr/Classes/**/*'
-  s.swift_version = '4.2'
+  s.swift_version = '5.0.0'
   # s.resource_bundles = {
   #   'Eatr' => ['Eatr/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'HandyJSON', '~> 4.2.0'
+  s.dependency 'HandyJSON', '~> 5.0.0'
 end
