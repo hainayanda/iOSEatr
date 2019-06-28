@@ -162,7 +162,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/nayanda1/iOSEatr.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '12.2'
 
   s.source_files = 'Eatr/Classes/**/*'
   s.swift_version = '5.0.0'
