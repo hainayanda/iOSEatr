@@ -1,3 +1,4 @@
+# This Project is Not Maintained and Updated to [NamadaEatr](https://github.com/nayanda1/iOSEatr)
 <p align="center">
   <img width="128" height="192" src="ios.eatr.png"/>
 </p>
