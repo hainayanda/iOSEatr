@@ -1,4 +1,4 @@
-# This Project is Not Maintained and Updated to [Vellum](https://github.com/nayanda1/Vellum)
+# This Project is Not Maintained and Updated to [iONess](https://github.com/oss-homecredit-id/iONess)
 <p align="center">
   <img width="128" height="192" src="ios.eatr.png"/>
 </p>
